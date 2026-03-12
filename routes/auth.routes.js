@@ -11,3 +11,6 @@ router.route('/recruiter/register').post(registerRecruiter);
 router.post("/candidate/register", registerCandidate)
 
 export default router;
+
+import { matchCandidateToJob } from "../controllers/candidate.controller.js";
+router.get("/match", matchCandidateToJob);

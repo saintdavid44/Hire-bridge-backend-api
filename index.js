@@ -41,3 +41,7 @@ app.listen(PORT, () => {
     connectDB();
     console.log(`Server is running on ${PORT}`);
 })
+
+import jobRoutes from "./routes/job.routes.js";
+
+app.use("/api/jobs", jobRoutes);

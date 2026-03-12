@@ -22,7 +22,7 @@ password: {
     type: String,
     required: [true, "Password is required"],
     trim: true,
-    minlength: [8, "Password must be at least 8 characters long"]
+    minlength: [8, "Password must be at least 8 characters long"],
     select: false,
 },
 // Confirm Password Field
