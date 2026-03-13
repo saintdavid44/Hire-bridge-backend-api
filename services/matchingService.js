@@ -1,3 +1,7 @@
+import Candidate from "../models/candidate.model.js";
+import Job from "../models/job.model.js";
+
+
 export const calculateMatchScore = (candidateSkills, jobSkills) => {
 
   const matchedSkills = candidateSkills.filter(skill =>
@@ -12,8 +16,6 @@ export const calculateMatchScore = (candidateSkills, jobSkills) => {
   };
 
 };
-import Candidate from "../models/candidate.model.js";
-import Job from "../models/job.model.js";
 
 export const matchCandidatesToJobs = async () => {
 
