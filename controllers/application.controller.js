@@ -4,23 +4,35 @@ import Job from "../models/job.model.js";
 // Apply for a job
 export const applyForJob = async (req, res, next) => {
   try {
-    // Step 1: Get data from request body
-    const { name, email, experience } = req.body;
-    
+    // Step 1: Get candidate details from logged in user (not from body)
+    const name = req.user.name;
+    const email = req.user.email;
+
     // Step 2: Get job ID from URL parameters
     const jobId = req.params.jobId;
 
-    // Step 3: Validate required fields
-    if (!name || !email || !jobId) {
+    // Step 3: Get experience and resume from request
+    const { experience } = req.body;
+    const resume = req.file ? req.file.path : null;
+
+    // Step 4: Validate required fields
+    if (!jobId) {
       return res.status(400).json({
         success: false,
-        message: "Missing required fields: name, email, and jobId are required",
+        message: "Job ID is required",
       });
     }
 
-    // Step 4: Check if the job exists
+    // Step 5: Check resume was uploaded
+    if (!resume) {
+      return res.status(400).json({
+        success: false,
+        message: "Please upload your resume",
+      });
+    }
+
+    // Step 6: Check if the job exists
     const job = await Job.findById(jobId);
-    
     if (!job) {
       return res.status(404).json({
         success: false,
@@ -28,7 +40,7 @@ export const applyForJob = async (req, res, next) => {
       });
     }
 
-    // Step 5: Check if the candidate has already applied for this job
+    // Step 7: Check if candidate already applied for this job
     const existingApplication = await Application.findOne({
       email,
       job: jobId,
@@ -41,17 +53,18 @@ export const applyForJob = async (req, res, next) => {
       });
     }
 
-    // Step 6: Create the application
+    // Step 8: Create the application
     const application = await Application.create({
       name,
       email,
-      experience: experience || 0, // Default to 0 if not provided
+      resume,
+      experience: experience || 0,
       job: jobId,
-      recruiter: job.recruiter, // Get the recruiter who posted the job
-      stage: "applied", // Default stage is "applied"
+      recruiter: job.recruiter,
+      stage: "applied",
     });
 
-    // Step 7: Send success response
+    // Step 9: Send success response
     res.status(201).json({
       success: true,
       message: "Application submitted successfully",
@@ -59,7 +72,6 @@ export const applyForJob = async (req, res, next) => {
     });
 
   } catch (error) {
-    // Step 8: Handle any errors
     next(error);
   }
 };
