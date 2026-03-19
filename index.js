@@ -7,10 +7,10 @@ import { errorHandler } from './middlewares/error.handler.js';
 
 // Routes Import
 import authRoutes from './routes/auth.routes.js';
+import applicationRoutes from "./routes/application.routes.js";
 import jobRoutes from "./routes/job.routes.js";
 import dashboardRoutes from "./routes/dashboard.routes.js";
 import candidateProfileRoutes from "./routes/candidate.profile.routes.js";
-import applicationRoutes from "./routes/application.routes.js";
 
 // Initializing app variable with express
 const app = express();
